@@ -51,8 +51,8 @@ class BennettRPE:
         """Collapse MBON population to scalar valence (mean for single-valence)."""
         return float(mbon.mean())
 
-    def step(self, pn: np.ndarray, reward: float) -> dict:
-        """One trial: encode odor, read out MBON, compute DAN error, update weights."""
+    def step(self, pn: np.ndarray, reward: float, learn: bool = True) -> dict:
+        """One trial: encode odor, read out MBON, compute DAN error, optionally update."""
         kc = self.coder.encode(pn)
         mbon = self.mbon_output(kc)
         m_hat = self.population_valence(mbon)
@@ -61,10 +61,9 @@ class BennettRPE:
         # (Bennett's full MV model has D+ and D- with opposing MBON feedback.)
         dan = reward - m_hat
 
-        # Hebbian update gated by DAN, restricted to real connectome edges.
-        # delta w_{m,i} = eta * dan * kc_i  (for all m where mask[m,i] = 1)
-        delta = self.eta * dan * kc[None, :]
-        self.w_kc_to_mbon = np.clip(self.w_kc_to_mbon + delta * self.mask, 0.0, None)
+        if learn:
+            delta = self.eta * dan * kc[None, :]
+            self.w_kc_to_mbon = np.clip(self.w_kc_to_mbon + delta * self.mask, 0.0, None)
 
         return {"kc": kc, "mbon": mbon, "m_hat": m_hat, "dan": dan, "n_kc_active": int(kc.sum())}
 

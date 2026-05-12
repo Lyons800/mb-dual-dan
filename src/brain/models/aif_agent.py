@@ -96,20 +96,19 @@ class AIFAgent:
     def expected_reward(self, q: np.ndarray) -> float:
         return float((q * self.mean_reward_per_class()).sum())
 
-    def step(self, pn: np.ndarray, reward: float) -> dict:
+    def step(self, pn: np.ndarray, reward: float, learn: bool = True) -> dict:
         kc = self.coder.encode(pn)
         q = self.posterior(kc)
         m_hat = self.expected_reward(q)
         dan = self.dan_signal(q)
 
-        # Online Bayesian update from this (KC, reward) observation.
-        # Class membership comes from the reward outcome (mirrors how the RPE
-        # baseline implicitly conditions weight changes on reward magnitude).
-        c = 0 if reward > 0.5 else 1
-        self.alpha[c] += kc
-        self.beta[c] += (1.0 - kc)
-        self.n_class[c] += 1
-        self.reward_sum[c] += reward
+        if learn:
+            # Online Bayesian update from this (KC, reward) observation.
+            c = 0 if reward > 0.5 else 1
+            self.alpha[c] += kc
+            self.beta[c] += (1.0 - kc)
+            self.n_class[c] += 1
+            self.reward_sum[c] += reward
 
         return {"kc": kc, "q": q, "m_hat": m_hat, "dan": dan, "n_kc_active": int(kc.sum())}
 
