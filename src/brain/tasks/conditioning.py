@@ -43,3 +43,16 @@ def conditioning_trials(cs: CSPair, n_trials: int, reward_value: float = 1.0):
             yield cs.cs_plus, reward_value, "CS+"
         else:
             yield cs.cs_minus, 0.0, "CS-"
+
+
+def extinction_trials(cs: CSPair, n_trials: int):
+    """After acquisition, present CS+ WITHOUT reward (extinction) interleaved
+    with CS-. Tests whether the RPE rule can unlearn an acquired association
+    when the reward contingency reverses, and whether the AIF agent's
+    uncertainty rises when prior predictions are violated.
+    """
+    for t in range(n_trials):
+        if t % 2 == 0:
+            yield cs.cs_plus, 0.0, "CS+(ext)"
+        else:
+            yield cs.cs_minus, 0.0, "CS-"

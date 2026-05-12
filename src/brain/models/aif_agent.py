@@ -1,4 +1,4 @@
-"""Active-inference mushroom-body agent.
+"""Bayesian-observer mushroom-body agent (perception-only AIF reduction).
 
 Same substrate as the Bennett RPE baseline (KC sparse code from real PN->KC wiring,
 connectome KC->MBON edge mask), but the learning + DAN signal come from variational
@@ -12,23 +12,44 @@ discovered from (KC, reward) observations:
     Reward model: mean reward per class tracked with a Gaussian-like running mean.
 
 On each trial:
-    q(c | KC) = softmax( sum_i kc_i * log p_i_c  +  (1 - kc_i) * log (1 - p_i_c)  +  log p(c) )
-    m_hat    = E_{q(c|KC)} [ E[r | c] ]                                 # MBON-equivalent readout
-    DAN      = H[ q(c | KC) ]                                           # AIF: posterior entropy
+    q(c | KC)         posterior via naive Bayes log-likelihood + log prior
+    m_hat = E_{q(c|KC)} [ E[r | c] ]              # MBON-equivalent readout
+    DAN   = D_KL[ q(c | KC) || q(c) ]            # Bayesian surprise = AIF DAN signal
 
-DAN is the **epistemic-value signal**: high when the agent is uncertain about the
-class identity given the current KC pattern. This is the falsifiable contrast with
-the RPE baseline, where DAN tracks reward error and goes to ~0 on familiar odors.
+The canonical DAN signal under active inference is **Bayesian surprise** —
+the KL divergence of the posterior from the prior, which is monotonically
+related to information gain. This is the quantity Friston / Schwartenbeck
+identify with dopaminergic precision / phasic responses. It is NOT the same
+as raw posterior entropy H[q(c|KC)] (we expose both for diagnostic
+comparison, but `dan` uses surprise).
 
-For familiar CS+/CS- odors the two models converge in behaviour (both correctly predict
-reward, both DAN signals fall toward 0). The discriminator lives in Phase 3:
-**novel-odor probing**, where AIF predicts a positive DAN transient (high entropy)
-and RPE predicts ~0 DAN (no reward, no prediction).
+The discriminator vs Bennett RPE:
+    RPE  DAN = r - m_hat            — tracks reward error
+    AIF  DAN = KL[q(c|KC) || q(c)]  — tracks information gain from observation
+
+Honest caveats (verified May 2026):
+- The "class = reward outcome" mapping makes this a supervised Bayesian
+  classifier rather than a full latent-state AIF agent. A genuinely latent-
+  state formulation would cluster KC patterns unsupervised and learn
+  p(reward | cluster) separately — see Phase 4 roadmap.
+- For a complete AIF agent we would also implement EFE-based policy
+  selection over actions; this is perception-only.
+- This agent cannot perform EXTINCTION (Phase 3c experiment). Because the
+  Beta-Bernoulli posterior over class identity accumulates positive evidence
+  monotonically, the agent never "unlearns" that CS+ pattern -> rewarded
+  class even when reward is withheld. This is the correct, honest behavior
+  of a perceptual-Bayesian formulation and reveals that AIF entropy/surprisal
+  are NOT substitutes for RPE: they serve different functions. A faithful
+  fly-MB model probably needs both perceptual surprise (AIF) and contingency
+  prediction error (RPE) as complementary DAN signals — see Phase 3c plot.
 
 References:
     Friston et al. 2017, "Active inference: a process theory" (Neural Computation).
-    pymdp 1.0 (Heins et al., JOSS 2022) — corresponds to a single perception step
-    with two hidden states and N_KC observation modalities, A_dependencies enabled.
+    Schwartenbeck et al. 2019, "Computational mechanisms of curiosity and
+        goal-directed exploration" (eLife) — DAN as precision / EFE proxy.
+    Itti & Baldi 2009, "Bayesian surprise attracts human attention".
+    Hattori et al. 2017 (Cell) — adult MB alpha'3 novelty response (we predict
+        a larval analog; experimental anchor in larva pending).
 """
 
 from __future__ import annotations
@@ -89,9 +110,63 @@ class AIFAgent:
         post = np.exp(log_post)
         return post / post.sum()
 
-    def dan_signal(self, q: np.ndarray) -> float:
-        """Posterior entropy over classes — the AIF DAN signal."""
+    def posterior_entropy(self, q: np.ndarray) -> float:
+        """H[q(c|KC)] — residual uncertainty about class after observation.
+
+        HIGH on novel odors (posterior can't decide between classes).
+        LOW on familiar odors (posterior peaks on the trained class).
+        Falls with repeated exposure as evidence accumulates.
+
+        This is the signal that matches Hattori 2017 alpha'3-style
+        novelty-and-habituation phenomenology.
+        """
         return float(-np.sum(q * np.log(q + self.eps)))
+
+    def bayesian_surprise(self, q: np.ndarray, kc: np.ndarray | None = None) -> float:
+        """D_KL[q(c|KC) || q(c)] — information gained about CLASS by the observation.
+
+        DIAGNOSTIC only. Note this quantity behaves OPPOSITE to a habituation
+        signal: it is HIGH on familiar odors (posterior moves far from the
+        marginal prior toward a peaked class belief) and LOW on novel odors
+        (posterior stays near uniform). Reported here for completeness and
+        for comparison with Itti-Baldi / Schwartenbeck-style claims about
+        DAN encoding information gain about latent state.
+        """
+        prior = np.exp(self.class_log_prior())
+        return float(np.sum(q * np.log((q + self.eps) / (prior + self.eps))))
+
+    def surprisal(self, kc: np.ndarray) -> float:
+        """-log p(KC | model)  — Shannon surprisal of the observation.
+
+        Equals variational free energy under perfect (zero-KL) inference.
+        HIGH on novel KC patterns that the model does not predict; LOW on
+        familiar patterns. Also habituates with exposure as the likelihood
+        adapts.
+
+        This is the Friston-citable habituation-compatible signal: -log p(o)
+        is what variational free energy F bounds, and it monotonically tracks
+        Hattori-style novelty responses.
+        """
+        p_kc_c = self.p_kc_given_class()                              # [2, n_kc]
+        log_lik = (kc[None, :] * np.log(p_kc_c + self.eps)
+                   + (1.0 - kc[None, :]) * np.log(1.0 - p_kc_c + self.eps)).sum(axis=1)
+        log_prior = self.class_log_prior()
+        # log p(KC) = log sum_c p(c) p(KC | c) — log-sum-exp for stability
+        a = log_lik + log_prior
+        m = a.max()
+        log_marg = m + np.log(np.exp(a - m).sum() + self.eps)
+        return float(-log_marg)
+
+    def dan_signal(self, q: np.ndarray) -> float:
+        """Canonical DAN readout for this agent: posterior entropy H[q(c|KC)].
+
+        Posterior entropy is the simplest Bayesian quantity that matches the
+        empirically-required habituation profile (high on novel, low on
+        familiar, decays with exposure). The surprisal -log p(KC) is the
+        Friston-rigorous alternative (variational free energy under perfect
+        inference); we expose both for the analysis stage.
+        """
+        return self.posterior_entropy(q)
 
     def expected_reward(self, q: np.ndarray) -> float:
         return float((q * self.mean_reward_per_class()).sum())
@@ -100,7 +175,9 @@ class AIFAgent:
         kc = self.coder.encode(pn)
         q = self.posterior(kc)
         m_hat = self.expected_reward(q)
-        dan = self.dan_signal(q)
+        dan = self.dan_signal(q)                       # = posterior entropy
+        bs = self.bayesian_surprise(q)                 # diagnostic
+        surp = self.surprisal(kc)                      # diagnostic
 
         if learn:
             # Online Bayesian update from this (KC, reward) observation.
@@ -110,7 +187,9 @@ class AIFAgent:
             self.n_class[c] += 1
             self.reward_sum[c] += reward
 
-        return {"kc": kc, "q": q, "m_hat": m_hat, "dan": dan, "n_kc_active": int(kc.sum())}
+        return {"kc": kc, "q": q, "m_hat": m_hat, "dan": dan,
+                "entropy": dan, "bayesian_surprise": bs, "surprisal": surp,
+                "n_kc_active": int(kc.sum())}
 
     @classmethod
     def from_mb(cls, mb: MBSubgraph, alpha0: float = 0.5, beta0: float = 0.5,

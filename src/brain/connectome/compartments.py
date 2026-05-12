@@ -77,16 +77,24 @@ def _jaccard(a: np.ndarray, b: np.ndarray) -> float:
     return inter / union if union > 0 else 0.0
 
 
-def discover_bipartite(mb: MBSubgraph, threshold: float = 0.4) -> BipartiteCompartments:
+def discover_bipartite(mb: MBSubgraph, threshold: float = 0.4,
+                       dans_only: bool = True) -> BipartiteCompartments:
     """Build the MBIN x MBON Jaccard matrix on shared KC pools, plus a
     reordering that makes block-diagonal compartment structure visible.
 
     Pairs above `threshold` are flagged as candidate (DAN, MBON) compartments —
     they have substantial KC pool overlap. Sets of mutually-overlapping
     MBINs+MBONs form many-to-many compartment groups.
+
+    `dans_only` (default True) restricts the analysis to dopaminergic MBINs only
+    (DAN-c1/d1/f1/g1/i1/j1/k1 in Winding's annotations). This matters because
+    Eichler 2017 shows larval DANs are 1:1 with anatomical compartments, while
+    OANs and "other MBINs" (APL, DPM-like, unknown-NT) have promiscuous KC
+    contacts that contaminate compartment recovery if included.
     """
     g = mb.groups()
-    kc_idx, mbon_idx, mbin_idx = g["KC"], g["MBON"], g["MBIN"]
+    kc_idx, mbon_idx = g["KC"], g["MBON"]
+    mbin_idx = g["DAN"] if dans_only else g["MBIN"]
     mbin_kc = (mb.W[np.ix_(kc_idx, mbin_idx)].toarray().T > 0).astype(np.float32)  # [n_mbin, n_kc]
     mbon_kc = (mb.W[np.ix_(mbon_idx, kc_idx)].toarray() > 0).astype(np.float32)    # [n_mbon, n_kc]
 

@@ -50,6 +50,10 @@ def _annotations_long(annot: pd.DataFrame) -> pd.DataFrame:
     right = annot.rename(columns={"right_id": "neuron_id"})[["neuron_id", *cols]].copy()
     right["side"] = "R"
     out = pd.concat([left, right], ignore_index=True)
+    # `additional_annotations` carries subtype labels for MBINs (DAN-c1, OAN-e1, ...)
+    # and brain region/function info for other cells. Surface it as `subtype` for
+    # convenience.
+    out["subtype"] = out["additional_annotations"]
     # 'no pair' marks unpaired bilateral/midline rows — coerce to NaN and drop.
     out["neuron_id"] = pd.to_numeric(out["neuron_id"], errors="coerce")
     out = out.dropna(subset=["neuron_id"]).reset_index(drop=True)

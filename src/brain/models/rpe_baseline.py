@@ -34,6 +34,12 @@ class BennettRPE:
     mask: np.ndarray                 # [n_mbon, n_kc] {0,1} — restricts plasticity to real edges
     eta: float = 0.025               # learning rate (Bennett Fig 2-3)
     relu_floor: float = 0.0          # ReLU activation floor
+    allow_negative_weights: bool = True
+    # In Bennett's dual-valence MV model the d+ and d- DANs together represent
+    # the bidirectional prediction error. In our single-valence reduction we
+    # achieve the same expressivity by allowing weights to go negative under
+    # extinction (negative DAN -> negative delta_w). Clipping at 0 would break
+    # extinction. Default True to enable proper RPE behaviour across paradigms.
 
     @property
     def n_mbon(self) -> int:
@@ -63,7 +69,10 @@ class BennettRPE:
 
         if learn:
             delta = self.eta * dan * kc[None, :]
-            self.w_kc_to_mbon = np.clip(self.w_kc_to_mbon + delta * self.mask, 0.0, None)
+            w_new = self.w_kc_to_mbon + delta * self.mask
+            if not self.allow_negative_weights:
+                w_new = np.clip(w_new, 0.0, None)
+            self.w_kc_to_mbon = w_new
 
         return {"kc": kc, "mbon": mbon, "m_hat": m_hat, "dan": dan, "n_kc_active": int(kc.sum())}
 
