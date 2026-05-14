@@ -39,6 +39,7 @@ import numpy as np
 from brain.connectome import extract_mb, load_winding
 from brain.models.aif_agent import AIFAgent
 from brain.models.dual_dan import DualDANAgent
+from brain.models.dual_valence import DualValenceMB
 from brain.models.rpe_baseline import BennettRPE
 from brain.tasks.conditioning import conditioning_trials, make_cs_pair, reversal_trials
 
@@ -50,7 +51,9 @@ def fresh_agents(mb, seed):
     return {
         "RPE":  BennettRPE.from_mb(mb, eta=0.025, w_init=0.05, sparsity=0.05, seed=seed),
         "AIF":  AIFAgent.from_mb(mb, sparsity=0.05, seed=seed),
-        "Dual": DualDANAgent.from_mb(mb, eta0=0.025, lambda_precision=1.5, sparsity=0.05, seed=seed),
+        "Dual-DAN": DualDANAgent.from_mb(mb, eta0=0.025, lambda_precision=1.5, sparsity=0.05, seed=seed),
+        "Dual-Valence": DualValenceMB.from_mb(mb, eta=0.025, lambda_baseline=1.0, w_M=1.0,
+                                              w_init=0.05, sparsity=0.05, seed=seed),
     }
 
 
@@ -117,7 +120,7 @@ def main():
         print(f"{name:>6} {'rev':>4} {'-':>17s} {t_a_down:>17d}")
 
     # ---- plot ----
-    fig, axes = plt.subplots(1, 3, figsize=(13, 4), sharey=True)
+    fig, axes = plt.subplots(1, 4, figsize=(16, 4), sharey=True)
     for ax, (name, log) in zip(axes, results.items()):
         t = np.arange(len(log["m_a"]))
         rev_start = int(np.argmax(log["phase"] == "rev"))
