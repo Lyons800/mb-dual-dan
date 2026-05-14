@@ -121,22 +121,78 @@ This work was developed in collaboration with the Claude language model (Anthrop
 
 ---
 
-## References *(skeleton — fill in)*
+## References
 
-- Bennett et al. 2021 *Nat Commun* — RPE in MB
-- Cohn, Morantte, Ruta 2015 *Cell* — γ-lobe DAN dynamics
-- Davis 2023 *Curr Biol* — memory stability across DAN receptor systems
-- Eichler et al. 2017 *Nature* — larval MB connectome
-- Eschbach et al. 2020 *Nat Neurosci* — FBN feedback architecture
-- Felsenberg et al. 2018 *Cell* — parallel opposing memories
-- Friston 2010 *Nat Rev Neurosci* — Free Energy Principle
-- Hattori et al. 2017 *Cell* — α'3 novelty DAN
-- Hu et al. 2025 *eLife* — DAN-c1 D2R gustatory aversive
-- Jacob et al. 2021 *Curr Biol* — latent inhibition in fly
-- Jurgensen et al. 2024 *iScience* — spiking larval PE model
-- Mancini et al. 2019 *Learn Mem* — reversal learning in larvae
-- Saumweber et al. 2018 *Nat Commun* — per-DAN optogenetic valence
-- Schwartenbeck et al. 2015 *J Neurosci* — DA as precision over policies
-- Weiglein et al. 2024 *eLife* — Four DL1 DANs signal taste punishment
-- Winding et al. 2023 *Science* — larval connectome
-- Yu & Dayan 2005 *Neuron* — unexpected uncertainty
+Aso Y, Hattori D, Yu Y, Johnston RM, Iyer NA, Ngo TB, Dionne H, Abbott LF, Axel R, Tanimoto H, Rubin GM. 2014. The neuronal architecture of the mushroom body provides a logic for associative learning. *eLife* 3:e04577. doi:10.7554/eLife.04577
+
+Aso Y, Sitaraman D, Ichinose T, Kaun KR, Vogt K, Belliart-Guerin G, Placais P-Y, Robie AA, Yamagata N, Schnaitmann C, Rowell WJ, Johnston RM, Ngo TB, Chen N, Korff W, Nitabach MN, Heberlein U, Preat T, Branson KM, Tanimoto H, Rubin GM. 2014. Mushroom body output neurons encode valence and guide memory-based action selection in *Drosophila*. *eLife* 3:e04580. doi:10.7554/eLife.04580
+
+Aso Y, Rubin GM. 2016. Dopaminergic neurons write and update memories with cell-type-specific rules. *eLife* 5:e16135. doi:10.7554/eLife.16135
+
+Bennett JEM, Philippides A, Nowotny T. 2021. Learning with reinforcement prediction errors in a model of the *Drosophila* mushroom body. *Nature Communications* 12:2569. doi:10.1038/s41467-021-22592-4
+
+Cohn R, Morantte I, Ruta V. 2015. Coordinated and compartmentalized neuromodulation shapes sensory processing in *Drosophila*. *Cell* 163:1742–1755. doi:10.1016/j.cell.2015.11.019
+
+Dabney W, Kurth-Nelson Z, Uchida N, Starkweather CK, Hassabis D, Munos R, Botvinick M. 2020. A distributional code for value in dopamine-based reinforcement learning. *Nature* 577:671–675. doi:10.1038/s41586-019-1924-6
+
+Davis RL. 2023. Learning and memory using *Drosophila melanogaster*: a focus on advances made in the fifth decade of research. *Genetics* 224:iyad085. doi:10.1093/genetics/iyad085
+
+Eichler K, Li F, Litwin-Kumar A, Park Y, Andrade I, Schneider-Mizell CM, Saumweber T, Huser A, Eschbach C, Gerber B, Fetter RD, Truman JW, Priebe CE, Abbott LF, Thum AS, Zlatic M, Cardona A. 2017. The complete connectome of a learning and memory centre in an insect brain. *Nature* 548:175–182. doi:10.1038/nature23455
+
+Engelhard B, Finkelstein J, Cox J, Fleming W, Jang HJ, Ornelas S, Koay SA, Thiberge SY, Daw ND, Tank DW, Witten IB. 2019. Specialized coding of sensory, motor and cognitive variables in VTA dopamine neurons. *Nature* 570:509–513. doi:10.1038/s41586-019-1261-9
+
+Eschbach C, Fushiki A, Winding M, Schneider-Mizell CM, Shao M, Arruda R, Eichler K, Valdes-Aleman J, Ohyama T, Thum AS, Gerber B, Fetter RD, Truman JW, Litwin-Kumar A, Cardona A, Zlatic M. 2020. Recurrent architecture for adaptive regulation of learning in the insect brain. *Nature Neuroscience* 23:544–555. doi:10.1038/s41593-020-0607-9
+
+Eschbach C, Fushiki A, Winding M, Afonso B, Andrade IV, Cocanougher BT, Eichler K, Gepner R, Si G, Valdes-Aleman J, Fetter RD, Gershow M, Jefferis GSXE, Samuel ADT, Truman JW, Cardona A, Zlatic M. 2021. Circuits for integrating learned and innate valences in the insect brain. *eLife* 10:e62567. doi:10.7554/eLife.62567
+
+Felsenberg J, Barnstedt O, Cognigni P, Lin S, Waddell S. 2017. Re-evaluation of learned information in *Drosophila*. *Nature* 544:240–244. doi:10.1038/nature21716
+
+Felsenberg J, Jacob PF, Walker T, Barnstedt O, Edmondson-Stait AJ, Pleijzier MW, Otto N, Schlegel P, Sharifi N, Perisse E, Smith CS, Lauritzen JS, Costa M, Jefferis GSXE, Bock DD, Waddell S. 2018. Integration of parallel opposing memories underlies memory extinction. *Cell* 175:709–722.e15. doi:10.1016/j.cell.2018.08.021
+
+Friston K. 2010. The free-energy principle: a unified brain theory? *Nature Reviews Neuroscience* 11:127–138. doi:10.1038/nrn2787
+
+Friston K, FitzGerald T, Rigoli F, Schwartenbeck P, Pezzulo G. 2017. Active inference: a process theory. *Neural Computation* 29:1–49. doi:10.1162/NECO_a_00912
+
+Hattori D, Aso Y, Swartz KJ, Rubin GM, Abbott LF, Axel R. 2017. Representations of novelty and familiarity in a mushroom body compartment. *Cell* 169:956–969.e17. doi:10.1016/j.cell.2017.04.028
+
+Heisenberg M. 2003. Mushroom body memoir: from maps to models. *Nature Reviews Neuroscience* 4:266–275. doi:10.1038/nrn1074
+
+Hige T, Aso Y, Modi MN, Rubin GM, Turner GC. 2015. Heterosynaptic plasticity underlies aversive olfactory learning in *Drosophila*. *Neuron* 88:985–998. doi:10.1016/j.neuron.2015.11.003
+
+Hu Y, Wang C, Yang L, Pan G, Liu H, Yu G, Ye B. 2025. A pair of dopaminergic neurons DAN-c1 mediate *Drosophila* larval aversive olfactory learning through D2-like receptors. *eLife* 13:RP100890. doi:10.7554/eLife.100890
+
+Itti L, Baldi P. 2009. Bayesian surprise attracts human attention. *Vision Research* 49:1295–1306. doi:10.1016/j.visres.2008.09.007
+
+Jacob PF, Vargas-Gutierrez P, Okray Z, Vietti-Michelina S, Felsenberg J, Waddell S. 2021. Prior experience conditionally inhibits the expression of new learning in *Drosophila*. *Current Biology* 31:3490–3503.e3. doi:10.1016/j.cub.2021.05.056
+
+Jiang L, Litwin-Kumar A. 2021. Models of heterogeneous dopamine signaling in an insect learning and memory center. *PLOS Computational Biology* 17:e1009205. doi:10.1371/journal.pcbi.1009205
+
+Jurgensen A-M, Sakagiannis P, Schleyer M, Gerber B, Nawrot MP. 2024. Prediction error drives associative learning and conditioned behavior in a spiking model of *Drosophila* larva. *iScience* 27:108640. doi:10.1016/j.isci.2023.108640
+
+Litwin-Kumar A, Harris KD, Axel R, Sompolinsky H, Abbott LF. 2017. Optimal degrees of synaptic connectivity. *Neuron* 93:1153–1164.e7. doi:10.1016/j.neuron.2017.01.030
+
+Mancini N, Hranova S, Weber J, Weiglein A, Schleyer M, Weber D, Thum AS, Gerber B. 2019. Reversal learning in *Drosophila* larvae. *Learning & Memory* 26:424–435. doi:10.1101/lm.049510.119
+
+Modi MN, Shuai Y, Turner GC. 2020. The *Drosophila* mushroom body: from architecture to algorithm in a learning circuit. *Annual Review of Neuroscience* 43:465–484. doi:10.1146/annurev-neuro-080317-062333
+
+Parr T, Friston KJ. 2019. Generalised free energy and active inference. *Biological Cybernetics* 113:495–513. doi:10.1007/s00422-019-00805-w
+
+Rachad EY, Deimel SH, Epple L, et al., Nawrot MP. 2025. Functional dissection of a neuronal brain circuit mediating higher-order associative learning. *Cell Reports* 44:115593. doi:10.1016/j.celrep.2025.115593
+
+Saumweber T, Rohwedder A, Schleyer M, Eichler K, Chen Y-C, Aso Y, Cardona A, Eschbach C, Kobler O, Voigt A, Durairaja A, Mancini N, Zlatic M, Truman JW, Thum AS, Gerber B. 2018. Functional architecture of reward learning in mushroom body extrinsic neurons of larval *Drosophila*. *Nature Communications* 9:1104. doi:10.1038/s41467-018-03130-1
+
+Schwartenbeck P, FitzGerald THB, Mathys C, Dolan R, Friston K. 2015. The dopaminergic midbrain encodes the expected certainty about desired outcomes. *Cerebral Cortex* 25:3434–3445. doi:10.1093/cercor/bhu159
+
+Schwartenbeck P, Passecker J, Hauser TU, FitzGerald THB, Kronbichler M, Friston KJ. 2019. Computational mechanisms of curiosity and goal-directed exploration. *eLife* 8:e41703. doi:10.7554/eLife.41703
+
+Sutton RS. 1988. Learning to predict by the methods of temporal differences. *Machine Learning* 3:9–44. doi:10.1007/BF00115009
+
+Tully T, Quinn WG. 1985. Classical conditioning and retention in normal and mutant *Drosophila melanogaster*. *Journal of Comparative Physiology A* 157:263–277. doi:10.1007/BF01350033
+
+Weiglein A, Thoener J, Feldbruegge I, Warzog L, Mancini N, Schleyer M, Gerber B. 2024. Four individually identified paired dopamine neurons signal taste punishment in larval *Drosophila*. *eLife* 12:RP91387. doi:10.7554/eLife.91387
+
+Winding M, Pedigo BD, Barnes CL, Patsolic HG, Park Y, Kazimiers T, Fushiki A, Andrade IV, Khandelwal A, Valdes-Aleman J, Li F, Randel N, Barsotti E, Correia A, Fetter RD, Hartenstein V, Priebe CE, Vogelstein JT, Cardona A, Zlatic M. 2023. The connectome of an insect brain. *Science* 379:eadd9330. doi:10.1126/science.add9330
+
+Yamada D, Bushey D, Li F, Hibbard KL, Sammons M, Funke J, Litwin-Kumar A, Hige T, Aso Y. 2023. Hierarchical architecture of dopaminergic circuits enables second-order conditioning in *Drosophila*. *eLife* 12:e79042. doi:10.7554/eLife.79042
+
+Yu AJ, Dayan P. 2005. Uncertainty, neuromodulation, and attention. *Neuron* 46:681–692. doi:10.1016/j.neuron.2005.04.026
