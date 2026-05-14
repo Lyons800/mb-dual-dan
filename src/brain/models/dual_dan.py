@@ -9,11 +9,24 @@ Combines the two complementary single-channel models from Phases 1–3:
 
     Channel A (AIF):  Bayesian-observer surprisal -log p(KC | model). Tracks
                       perceptual NOVELTY. High on unseen patterns; habituates
-                      with exposure. Biological anchor: by analogy to adult
-                      PPL1-alpha'3 (Hattori 2017), candidate larval substrate
-                      is DAN-c1 — the one larval DAN with no associative
-                      phenotype under optogenetic activation (Saumweber 2018,
-                      DAN-c1 D2R work eLife 2025).
+                      with exposure.
+
+                      Biological anchor: by analogy to adult PPL1-alpha'3
+                      (Hattori 2017 Cell). A specific larval substrate
+                      remains UNCONFIRMED. DAN-c1 is the strongest candidate
+                      for carrying an *additional* novelty/permissive
+                      component because (a) optogenetic activation alone
+                      produces no associative memory (Saumweber 2018), and
+                      (b) it modulates plasticity via D2R autoregulation
+                      rather than direct reinforcement signaling (Hu et al.
+                      2025 eLife). Hu 2025 also documents a gustatory
+                      aversive learning role for DAN-c1 — these are not
+                      mutually exclusive in a multi-signal DAN framework
+                      (cf. Engelhard 2019, Dabney 2020). The dual-DAN model
+                      is agnostic to *which* DAN carries the AIF channel;
+                      direct calcium imaging of DAN-c1 (or other DAN
+                      candidates) during novel-vs-familiar odor remains
+                      the empirical falsifier.
 
 The hybrid signal follows the canonical "precision-weighted RPE" form
 discussed in Schwartenbeck 2015 / Iigaya / Yu-Dayan:

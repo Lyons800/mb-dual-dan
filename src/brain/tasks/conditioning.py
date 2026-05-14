@@ -56,3 +56,25 @@ def extinction_trials(cs: CSPair, n_trials: int):
             yield cs.cs_plus, 0.0, "CS+(ext)"
         else:
             yield cs.cs_minus, 0.0, "CS-"
+
+
+def reversal_trials(cs: CSPair, n_trials: int, reward_value: float = 1.0):
+    """Reversal-learning paradigm (Mancini 2019, Learn Mem 26:424).
+
+    After acquisition (CS+ paired with reward, CS- alone), present the
+    REVERSE contingency: CS+ now appears WITHOUT reward, CS- now appears
+    WITH reward. Labels reflect the original assignments so analysis can
+    track how fast each pattern flips its m_hat valence.
+
+    Mancini's published asymmetry: appetitive reversal completes in ~1
+    cycle whereas the original acquisition needed 3 cycles. This
+    asymmetry is the discriminating signature — pure RPE predicts
+    symmetric kinetics (same eta governs unlearning and re-learning);
+    a parallel-opposing-memories or dual-channel architecture predicts
+    asymmetric reversal.
+    """
+    for t in range(n_trials):
+        if t % 2 == 0:
+            yield cs.cs_plus, 0.0, "was_CS+"          # the previously-rewarded odor, now unrewarded
+        else:
+            yield cs.cs_minus, reward_value, "was_CS-"  # the previously-unrewarded odor, now rewarded
