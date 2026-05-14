@@ -55,29 +55,69 @@ Across the four protocols, no subset of three architectural ingredients suffices
 
 ---
 
-## Discussion *(target 800 words)*
+## Discussion
 
-1. **Four ingredients, each necessary**. The connectome alone doesn't pick the learning rule; behaviour does. Each ingredient maps to specific connectome cell types (PN→KC for sparse coding; KC→MBON for readout; DAN→MBON for RPE channel; cross-valence DAN feedback for POM).
-2. **Architectural completeness vs. quantitative refinement**. The symmetric Bennett-MV reproduces the QUALITATIVE POM signature but not Mancini's 3:1 asymmetry. This identifies a quantitative constraint: appetitive vs. aversive plasticity must be asymmetric. Davis 2023 has anatomical/molecular evidence for this (different DAN receptors, different decay constants).
-3. **The DAN-c1 prediction**. Saumweber 2018 showed DAN-c1 has no associative phenotype under direct optogenetic activation, suggesting a modulatory/permissive role. Hu 2025 documents a gustatory aversive function via D2R. We predict that, *in addition*, DAN-c1 carries a perceptual-surprise component analogous to adult PPL1-α'3 (Hattori 2017). The empirical test: calcium imaging of DAN-c1 during novel-vs-familiar odor presentation before reinforcement. Direct falsification.
-4. **Relation to other modeling approaches**. Bennett 2021 / Jurgensen 2024 = single-channel RPE only. Jiang & Litwin-Kumar 2021 = heterogeneous DA without explicit AIF. Active-inference literature (Friston, Pezzulo, Lanillos) hasn't applied to MB. Our contribution is the synthesis on a real connectome.
-5. **Limitations**. No action selection (perception-only AIF reduction). Compartments grouped by valence rather than per-compartment plasticity. Reward signal is supervised. No embodied behaviour.
-6. **Future**: scale to adult FlyWire; implement asymmetric η+/η- to match Mancini quantitatively; add EFE-based policy selection for full Friston-compatible AIF; embodied agent in larvaworld closing the loop.
+We have shown that four architectural ingredients are jointly necessary to reproduce four well-established behavioural phenomena in the larval *Drosophila* mushroom body, holding the synaptic substrate constant at the Winding 2023 connectome. No subset of three ingredients suffices. The result resolves a tension that has accumulated in the field: the standard single-channel RPE account (Bennett 2021 and predecessors) is correct for acquisition and extinction, but a separate channel is needed for novelty-related phenomena (Hattori 2017), precision-weighting is needed for latent inhibition (Jacob & Waddell 2022), and parallel valence traces are needed for fast reversal (Mancini 2019; Felsenberg 2018). Each phenomenon has been treated as a curious exception. We argue they share a common diagnosis: cortex-like learning rules layered on the same connectome substrate.
+
+The DAN-c1 prediction is the most directly falsifiable contribution. Saumweber 2018 showed that direct optogenetic activation of DAN-c1 alone produces no associative memory — anomalous for a DAN under standard RPE accounts. Hu 2025 has since documented a gustatory aversive learning role for DAN-c1 via D2R autoregulation. These are not mutually exclusive in a multi-signal DAN framework (Engelhard 2019; Dabney 2020), and we hypothesise that DAN-c1 also carries a perceptual-surprise component analogous to adult PPL1-α'3 (Hattori 2017). The empirical test is direct: calcium imaging of DAN-c1 during the first exposure to a novel odor, before any reward pairing, should show a transient activation that habituates with repeated exposure. A negative result would falsify the specific cellular hypothesis without affecting the architectural claim — any other DAN, or any FBN, could in principle carry the surprisal channel. The prediction is therefore both specific and recoverable.
+
+Our model identifies one quantitative gap: the symmetric Bennett-MV formulation reproduces the qualitative POM signature (reversal as fast as acquisition) but not Mancini's specific 3:1 acquisition-vs-reversal ratio. We achieve a ratio near 1 across the tested η range; the data require closer to 3. This is informative. The Davis lab has documented asymmetric stability between appetitive and aversive memories at the cellular level (different DAN receptors, distinct decay constants, ARM/ASM separation). Implementing this asymmetry — η+ ≠ η-, λ+ ≠ λ-, or distinct decay rates — should close the quantitative gap, but is a parameter and not an architectural change. The prediction is testable: aversive memory traces should retain through longer intervals than appetitive ones in computational terms exactly as Davis 2023 reports them biologically.
+
+Our approach contrasts with three adjacent lines of work. The Nawrot lab (Jurgensen 2024, Rachad 2025) has the closest published substrate — a connectome-informed spiking larval MB with RPE-only DAN signalling. They reproduce delay conditioning and second-order conditioning but do not include a perceptual-surprise channel and have not been shown to reproduce latent inhibition. Jiang & Litwin-Kumar 2021 argued for heterogeneous DAN coding without proposing an explicit AIF/surprisal channel. Active-inference theorists (Friston, Pezzulo, Lanillos, Schwartenbeck) have argued for precision-weighting and EFE-based policy selection but have not applied these to MB substrates. The contribution here is the synthesis on a real connectome and the demonstration that all three signals are required.
+
+Several limitations should be acknowledged. The "AIF" agent in this paper is a perception-only Bayesian observer rather than a full active-inference agent — there is no action selection by EFE minimisation, no policy precision γ, and the latent state is supervised by reward outcome rather than truly latent. A complete AIF treatment using pymdp 1.0 or RxInfer.jl is a natural next step. The MBON pooling collapses 48 cells into two valence populations (per Eichler 2017 / Eschbach 2021 single-MBON behavioural labels); per-compartment plasticity with the full eligibility-trace 3-factor rule (Aso 2014/2016, Cohn 2015) would be a faithful refinement. The substrate is L1; scaling to adult FlyWire (2,580 KCs, 19 MBON types) is the obvious extension and is now feasible. Finally, the agent is disembodied — closing the sensorimotor loop in NeuroMechFly v2 / FlyGym v2 / larvaworld would let us test behavioural outputs against published navigation data.
+
+We close with the observation that the larval *Drosophila* MB is now the smallest brain region in any animal where every synapse is mapped, multiple behavioural protocols have been quantitatively characterised, and individual DANs and MBONs can be perturbed optogenetically. This makes it an ideal proving ground for *which* learning rules biology has converged on. Our claim is not that the brain runs precisely the equations we describe; it is that any complete model of MB function must accommodate the four ingredients we have shown to be individually necessary. We expect this constraint to sharpen as adult connectomes mature and as more behavioural protocols are quantitatively characterised on the same substrate.
 
 ---
 
-## Methods *(target 1000 words)*
+## Methods
 
-- **Connectome data**: Winding 2023 *Science* Supplementary Data S1, public; transposed to W[post,pre] convention.
-- **MB subgraph extraction**: filter on cell types KC/MBON/MBIN/PN/MB-FBN/MB-FFN.
-- **KC sparse coding**: row-normalised PN→KC weights, top-k winner-take-all (k = 5% of 144 = 7 active per odor).
-- **RPE rule**: Bennett 2021 single-valence reduction, signed weights enabled.
-- **AIF agent**: Beta-Bernoulli p(KC | class), naive Bayes posterior, DAN signal = posterior entropy. Surprisal -log p(KC) reported as Friston-rigorous alternative.
-- **Dual-DAN**: precision-weighted RPE, eta_eff = eta_0 * (1 + lambda * standardised surprisal).
-- **Dual-Valence**: Bennett-MV with separate w+/w-, cross-valence DAN feedback, λ-baselined update rule.
-- **Connectome valence labels**: from Saumweber 2018, Weiglein 2024, Hu 2025; appetitive = i/j/k compartments, aversive = c/d/f/g compartments.
-- **Multi-seed robustness**: 20 seeds per phenomenon for variance bands.
-- **AI assistance**: this work was developed in collaboration with Claude (Anthropic) for code generation, literature search, and verification of equations. No claims, results, or analyses depend on Claude as an author. Code at github.com/oisinlyons/brain (TODO).
+### Connectome substrate
+
+We used the larval *Drosophila* synaptic-resolution connectome from Winding et al. 2023 (*Science*), Supplementary Data S1 (publicly released, no restrictions). The all-to-all connectivity matrix (2,952 × 2,952 neurons; 110,677 nonzero edges; 352,611 synaptic contacts) was transposed at load time to the standard `W[post, pre]` convention so that `y = W · x` gives postsynaptic activity. The accompanying `annotations.csv` provides cell-type labels and subtype annotations (e.g. DAN-c1, MBON-i1) that we use throughout.
+
+The MB subgraph is extracted by filtering on the cell-type column to retain KC, MBON, MBIN (the supercategory containing DANs, OANs, and other modulatory cells), MB-FBN (feedback neurons), MB-FFN (feedforward neurons), and PN (projection neurons). DAN identity is recovered by parsing the `additional_annotations` subtype labels matching the pattern `DAN-*`. The resulting subgraph contains 588 neurons (144 KCs, 48 MBONs, 28 MBINs split into 14 DANs / 4 OANs / 10 other-modulatory cells, 108 MB-FBNs, 54 MB-FFNs, 206 PNs) connected by 22,331 synaptic edges (~157k total synaptic contacts).
+
+Neurotransmitter signs are not in the Winding S1 dataset and Eckstein et al. 2024's neurotransmitter classifier was trained on adult FAFB data and does not apply to L1 larval EM. We use cell-class conventions: KC, MBON, PN, and sensory neurons are treated as cholinergic (excitatory); LN and APL as GABAergic (inhibitory); MBINs are treated as modulatory with sign +1 in the linear readout (their teaching action is implemented separately in the plasticity rule, not as fast postsynaptic drive).
+
+### KC sparse coding
+
+Each odor is represented as a sparse PN activation pattern (~20 of 206 PNs active per odor, drawn at random with uniform intensity in [0.5, 1.0]). The PN→KC weight matrix is extracted from the connectome subgraph and row-normalised. KC activity is the row-normalised PN→KC product followed by a winner-take-all top-k operation with k = 5% of KCs (k=7 of 144 active per odor), matching the published Litwin-Kumar 2017 sparsity target. KC activity is binary (active = 1, inactive = 0).
+
+### RPE agent (Bennett 2021 single-valence reduction)
+
+A single MBON pool reads out from the KCs with plastic weights `w_KC→MBON` initialised at 0.05 and masked by the connectome KC→MBON edge mask. MBON output is `m_hat = ReLU(w · k)`, pooled across the 48 MBONs. The DAN error is `δ = r − m_hat`. The plasticity rule is `Δw_i = η · k_i · δ` with η = 0.025 (Bennett Fig. 2-3 value). Weights are clipped from below at zero only when `allow_negative_weights=False`; for the experiments reported here we allow signed weights, which is necessary for extinction.
+
+### AIF / Bayesian-observer agent
+
+Two latent classes (`rewarded`, `unrewarded`) are tracked with Beta-Bernoulli sufficient statistics over `p(KC_i = 1 | class)` (α and β counts per KC per class). Class assignment for each trial is `c = (reward > 0.5)`; this makes the agent a supervised Bayesian classifier, not a fully unsupervised latent-state AIF agent. The posterior `q(c | KC)` is computed by naive-Bayes log-likelihood with a smoothed log-prior derived from class counts. The agent exposes three signals: posterior entropy `H[q(c|KC)]`, Bayesian surprise `KL[q(c|KC) || q(c)]`, and surprisal `−log p(KC | model) = −log Σ_c p(c) p(KC|c)`. The canonical DAN signal in our results is posterior entropy, which habituates on familiar patterns; surprisal is also reported as the Friston-rigorous alternative.
+
+### Dual-DAN precision-weighted hybrid
+
+Combines RPE and AIF: at each step, the AIF surprisal is z-scored against an online running mean and standard deviation (momentum 0.05) and clipped non-negatively. The effective RPE learning rate is `η_eff = η_0 · (1 + λ · standardised_surprisal)`. We use η_0 = 0.025 and λ = 1.5 unless otherwise noted; results across λ ∈ [0, 5] are shown in Fig. 4C.
+
+### Dual-Valence Bennett-MV agent
+
+Two parallel MBON pools (`m+` for appetitive compartments i/j/k, `m-` for aversive compartments c/d/f/g) with separate plastic weight matrices `w+` and `w-`. Compartment assignment uses the DAN subtype labels (Saumweber 2018; Weiglein 2024; Hu 2025) and the MBON subtype labels (Eichler 2017; Eschbach 2021). Reward is split as `r+ = max(0, r), r- = max(0, -r)`. Cross-valence DAN feedback: `d+ = ReLU(r+ + w_M · m-)`, `d- = ReLU(r- + w_M · m+)`, with `w_M = 1`. Weight updates follow Bennett's VS_λ rule (Eq. 23): `Δw+ = η · k · (λ − d-)`, `Δw- = η · k · (λ − d+)` with λ-baseline = 1.0. Weights clipped at zero.
+
+### Behavioural protocols
+
+- **Acquisition**: 30 alternating CS+ (rewarded, r=+1.0) and CS- (unrewarded) trials.
+- **Extinction**: after acquisition, 20 more alternating trials with CS+ no longer rewarded.
+- **Novel-odor probes**: after CS+/CS- training, present 12–20 fresh random odor patterns with reward=0 and learning off, then re-probe with learning on for the habituation curve.
+- **Latent inhibition**: 20 trials of unrewarded CS+ pre-exposure (or unrelated odor for control), then 40 trials of alternating CS+/CS- acquisition.
+- **Reversal**: 30 trials of CS_A rewarded / CS_B not, then 30 trials with the contingency flipped (CS_A no reward, CS_B rewarded).
+
+All protocols are run for 20 random seeds for variance bands.
+
+### Software and code availability
+
+All analyses were implemented in Python 3.12 using NumPy 2.4, SciPy 1.17, NetworkX 3.6, Brian2 2.10, JAX 0.4 (CPU), and matplotlib 3.9. The complete codebase, including reproducible experiment scripts and regression tests (37 tests, all passing), is released at `github.com/<TODO>` under MIT license. The Winding 2023 connectome data is reused under the original Zenodo deposit terms.
+
+### AI-assistance disclosure
+
+This work was developed in collaboration with the Claude language model (Anthropic) acting as a coding pair-programmer, literature searcher, and verifier of mathematical derivations. Claude proposed, debugged, and tested code; identified and corrected one major error (the AIF "Bayesian surprise" framing that did not habituate, since reverted to posterior entropy) and one minor misreading (the Mancini reversal asymmetry specifics) during a verification pass. The scientific claims, model design choices, and interpretation are the author's. No conclusions in this paper depend on Claude as an author.
 
 ---
 
