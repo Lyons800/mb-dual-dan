@@ -31,7 +31,7 @@ We extracted the larval MB subgraph from Winding 2023 by filtering on the cell-t
 
 To test whether the wiring alone encodes the canonical compartmental organisation of Eichler 2017, we computed the bipartite Jaccard similarity between each DAN and each MBON on their shared KC pools (Fig. 1B), then thresholded and hierarchically reordered. The block-diagonal structure is immediately visible. The single highest-overlap pair is DAN-i1 ↔ MBON-i1 with J = 0.82 (Fig. 1C); the same pattern repeats across hemispheres. **Anatomical compartment identity is recoverable from synaptic wiring alone.** This validates the substrate for the modelling that follows.
 
-Onto this substrate we built four agents (Fig. 1D), each sharing the same PN→KC sparse coder (top-k=7 of 144 active per odor, matching Honegger 2014's 5% sparsity), and each differing only in the KC→MBON learning rule and the DAN signal. The four are: (i) classical RPE (Bennett 2021 single-valence with signed weights), (ii) a Bayesian-observer "AIF" agent tracking posterior entropy and surprisal, (iii) a precision-weighted hybrid `η_eff = η_0 (1 + λ·surprisal)`, and (iv) a full Bennett-MV dual-valence model with parallel appetitive and aversive traces. All four are tested on identical behavioural protocols.
+Onto this substrate we built four agents (Fig. 1D), each sharing the same PN→KC sparse coder (top-k=7 of 144 active per odor, consistent with the optimal-sparsity target derived by Litwin-Kumar et al. 2017), and each differing only in the KC→MBON learning rule and the DAN signal. The four are: (i) classical RPE (Bennett 2021 single-valence with signed weights), (ii) a Bayesian-observer "AIF" agent tracking posterior entropy and surprisal, (iii) a precision-weighted hybrid `η_eff = η_0 (1 + λ·surprisal)`, and (iv) a full Bennett-MV dual-valence model with parallel appetitive and aversive traces. All four are tested on identical behavioural protocols.
 
 ### Signed-weight RPE supports acquisition and extinction (Fig. 2)
 
@@ -79,7 +79,7 @@ We used the larval *Drosophila* synaptic-resolution connectome from Winding et a
 
 The MB subgraph is extracted by filtering on the cell-type column to retain KC, MBON, MBIN (the supercategory containing DANs, OANs, and other modulatory cells), MB-FBN (feedback neurons), MB-FFN (feedforward neurons), and PN (projection neurons). DAN identity is recovered by parsing the `additional_annotations` subtype labels matching the pattern `DAN-*`. The resulting subgraph contains 588 neurons (144 KCs, 48 MBONs, 28 MBINs split into 14 DANs / 4 OANs / 10 other-modulatory cells, 108 MB-FBNs, 54 MB-FFNs, 206 PNs) connected by 22,331 synaptic edges (~157k total synaptic contacts).
 
-Neurotransmitter signs are not in the Winding S1 dataset and Eckstein et al. 2024's neurotransmitter classifier was trained on adult FAFB data and does not apply to L1 larval EM. We use cell-class conventions: KC, MBON, PN, and sensory neurons are treated as cholinergic (excitatory); LN and APL as GABAergic (inhibitory); MBINs are treated as modulatory with sign +1 in the linear readout (their teaching action is implemented separately in the plasticity rule, not as fast postsynaptic drive).
+Neurotransmitter signs are not in the Winding S1 dataset and the adult-FAFB neurotransmitter classifier of Eckstein et al. 2024 does not apply to L1 larval EM. We use cell-class conventions: KC, MBON, PN, and sensory neurons are treated as cholinergic (excitatory); LN and APL as GABAergic (inhibitory); MBINs are treated as modulatory with sign +1 in the linear readout (their teaching action is implemented separately in the plasticity rule, not as fast postsynaptic drive).
 
 ### KC sparse coding
 
@@ -136,6 +136,8 @@ Cohn R, Morantte I, Ruta V. 2015. Coordinated and compartmentalized neuromodulat
 Dabney W, Kurth-Nelson Z, Uchida N, Starkweather CK, Hassabis D, Munos R, Botvinick M. 2020. A distributional code for value in dopamine-based reinforcement learning. *Nature* 577:671–675. doi:10.1038/s41586-019-1924-6
 
 Davis RL. 2023. Learning and memory using *Drosophila melanogaster*: a focus on advances made in the fifth decade of research. *Genetics* 224:iyad085. doi:10.1093/genetics/iyad085
+
+Eckstein N, Bates AS, Champion A, Du M, Yin Y, Schlegel P, Lu A K-Y, Rymer T, Finley-May S, Paterson T, Parekh R, Dorkenwald S, Matsliah A, Yu S-c, McKellar C, Sterling A, Eichler K, Costa M, Seung S, Murthy M, Hartenstein V, Jefferis GSXE, Funke J. 2024. Neurotransmitter classification from electron microscopy images at synaptic sites in *Drosophila melanogaster*. *Cell* 187:2574–2594. doi:10.1016/j.cell.2024.03.016
 
 Eichler K, Li F, Litwin-Kumar A, Park Y, Andrade I, Schneider-Mizell CM, Saumweber T, Huser A, Eschbach C, Gerber B, Fetter RD, Truman JW, Priebe CE, Abbott LF, Thum AS, Zlatic M, Cardona A. 2017. The complete connectome of a learning and memory centre in an insect brain. *Nature* 548:175–182. doi:10.1038/nature23455
 
