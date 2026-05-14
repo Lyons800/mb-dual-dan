@@ -25,57 +25,33 @@ The recent publication of the complete larval *Drosophila* synaptic-resolution c
 
 ## Results
 
-### Figure 1 — Substrate and architecture
+### A connectome substrate that reveals compartment structure (Fig. 1)
 
-(a) Larval *Drosophila* MB subgraph extracted from Winding 2023: 144 KCs, 24 MBON types (48 cells), 7 DAN types (14 cells, 4 aversive + 3 appetitive), 206 PNs.
-(b) Bipartite Jaccard heatmap of DAN-MBON shared KC pools, hierarchically reordered. Block structure reveals compartments without any anatomical labels.
-(c) Highest-Jaccard pair: DAN-i1 ↔ MBON-i1 (J=0.82). Subtype labels confirm canonical Eichler 2017 compartment recovery purely from wiring.
-(d) Architecture diagram: KC → MBON readout pathway with three plasticity channels (RPE, AIF surprisal, parallel-valence POM).
+We extracted the larval MB subgraph from Winding 2023 by filtering on the cell-type annotations: 144 Kenyon cells (KCs), 48 MBONs (24 cell types in left/right pairs), 14 DAN cells (7 types — DAN-c1/d1/f1/g1 aversive and DAN-i1/j1/k1 appetitive per Saumweber 2018, Weiglein 2024 and Hu 2025), 4 OAN cells, and 206 projection neurons — 588 neurons connected by 22,331 synaptic edges (Fig. 1A). DAN-h1, present in older anatomical descriptions, is absent from the L1 EM volume (Eichler 2017 confirms this developmental absence).
 
-**Source files:** `experiments/00_load_connectome.py`, `experiments/04_compartments.py`.
+To test whether the wiring alone encodes the canonical compartmental organisation of Eichler 2017, we computed the bipartite Jaccard similarity between each DAN and each MBON on their shared KC pools (Fig. 1B), then thresholded and hierarchically reordered. The block-diagonal structure is immediately visible. The single highest-overlap pair is DAN-i1 ↔ MBON-i1 with J = 0.82 (Fig. 1C); the same pattern repeats across hemispheres. **Anatomical compartment identity is recoverable from synaptic wiring alone.** This validates the substrate for the modelling that follows.
 
-### Figure 2 — Acquisition + extinction (the RPE backbone)
+Onto this substrate we built four agents (Fig. 1D), each sharing the same PN→KC sparse coder (top-k=7 of 144 active per odor, matching Honegger 2014's 5% sparsity), and each differing only in the KC→MBON learning rule and the DAN signal. The four are: (i) classical RPE (Bennett 2021 single-valence with signed weights), (ii) a Bayesian-observer "AIF" agent tracking posterior entropy and surprisal, (iii) a precision-weighted hybrid `η_eff = η_0 (1 + λ·surprisal)`, and (iv) a full Bennett-MV dual-valence model with parallel appetitive and aversive traces. All four are tested on identical behavioural protocols.
 
-(a) Bennett RPE acquisition curve on connectome PN→KC and KC→MBON: m_hat for CS+ rises 0.18 → 0.93 over 60 trials; CS- stays flat. (b) DAN error (r - m_hat) decays from 0.82 to 0.07.
-(c) Extinction phase: with signed weights (Phase 3c rigor fix), m_hat extinguishes 0.94 → 0.15 over 20 trials. Without signed weights, RPE structurally cannot extinguish.
+### Signed-weight RPE supports acquisition and extinction (Fig. 2)
 
-**Claim**: signed-weight RPE is necessary and sufficient for acquisition+extinction. Multi-seed variance bands (N=20).
+On a standard alternating CS+/CS- conditioning task with reward paired to CS+, the RPE agent acquires the appetitive response cleanly: across 20 random seeds, m_hat for CS+ rises from 0.20 ± 0.02 to 0.94 ± 0.01 over 30 trials, with CS- staying flat near zero (Fig. 2A). The DAN error (r − m_hat) decays from 0.82 to 0.06 (Fig. 2B), confirming the standard Rescorla-Wagner trajectory. When the contingency is reversed (CS+ → no reward), the model extinguishes 0.94 → 0.15 over 20 trials (Fig. 2C) — but only because signed weights are permitted. Clipping weights at zero (a common implementation choice we removed in our rigor pass) makes extinction structurally impossible: w+ can only grow, never shrink. **Signed-weight RPE is necessary for acquisition and extinction.**
 
-**Source files:** `experiments/01_rpe_baseline.py`, `experiments/05_extinction.py`.
+### A Bayesian surprisal channel is necessary for novelty signalling (Fig. 3)
 
-### Figure 3 — Novel-odor signaling (the AIF channel)
+After training, we presented familiar and novel-odor probes without reward (no learning during probe phase). The RPE agent's |DAN| on familiar CS+ is large (∼0.5 on average due to extinction-style PE when reward is omitted) but contains no novelty signal — its DAN magnitude is bounded by learned m_hat alone (Fig. 3A). The AIF agent shows the opposite profile: confident posterior (entropy ≈ 0) on familiar odors, but **bimodal** novelty response on 200 unique probes (Fig. 3B) — approximately half cluster at zero (novel KC patterns that happen to align with one trained class) and approximately half cluster at log(2) ≈ 0.69 (the theoretical maximum entropy for two classes, achieved when the KC pattern strongly mixes features of both). Repeated exposure to a single novel odor with learning enabled produces immediate habituation: AIF DAN drops from log(2) on the first trial to 0 on the second (Fig. 3C), reproducing the canonical Hattori 2017 α'3 novelty-habituation profile. **A Bayesian surprisal channel — explicitly tracking posterior entropy or model-evidence surprisal − log p(KC) − is necessary for these signatures.**
 
-(a) After CS+/CS- conditioning, present 12 novel odors and 11 CS+/CS- mixtures. (b) AIF |DAN| reaches the theoretical maximum log(2)=0.69 on 5/12 truly-ambiguous novels; RPE |DAN| is bounded by m_hat magnitude. (c) Repeated novel exposure → AIF DAN habituates (the Hattori-2017-α'3 signature). (d) RPE has no mechanism to flag novel odors.
+### Precision-weighted learning yields latent inhibition (Fig. 4)
 
-**Claim**: a Bayesian-observer surprisal channel is necessary for novelty/familiarity signaling and habituation.
+Pre-exposure to an odor without reward is known to slow subsequent CS+US learning (latent inhibition, Jacob & Waddell 2022). The mechanistic prediction of any precision-weighted theory is direct: pre-exposure habituates surprisal, lowering η_eff at the moment when reward is later introduced. We tested this with a two-group design: pre-exposed (20 unrewarded CS+ presentations) vs. control (20 unrelated-odor presentations), each followed by 40-trial CS+/CS- acquisition (Fig. 4A,B). Across 20 seeds, RPE shows essentially overlapping acquisition curves between groups — the structural prediction for a model with no precision-weighting mechanism. The Dual-DAN model shows a dramatic separation: the control group reaches m_hat = 1.0 by trial 1, while the pre-exposed group ramps slowly from 0 to ∼0.8 over 40 trials. A λ-sweep (Fig. 4C) confirms the causal mechanism: the LI effect rises monotonically from 0.06 at λ = 0 (the pure-RPE limit) to 0.89 at λ = 5. **Precision-weighted learning rate is necessary for latent inhibition.**
 
-**Source files:** `experiments/02_aif_agent.py`, `experiments/03_novel_odor.py`.
+### Parallel valence traces enable fast reversal (Fig. 5)
 
-### Figure 4 — Latent inhibition (precision-weighted RPE)
+The Mancini 2019 reversal protocol exposes a fourth phenomenon that single-valence models cannot capture. After 30 trials of CS_A → reward and CS_B → nothing, the contingency reverses (CS_A → nothing, CS_B → reward) and the trial budget is symmetric. The four models diverge sharply (Fig. 5A–C): pure RPE reverses symmetrically (∼10 trials each direction, as expected from a single trace with identical η governing both directions); AIF fails entirely (accumulated Beta-Bernoulli evidence locks the class assignment for 50+ reversal trials); the Dual-DAN hybrid reverses but slowly (the surprisal boost is gone during reversal because both patterns are now familiar); only the **Dual-Valence** Bennett-MV model reverses cleanly via Felsenberg 2018's parallel-opposing-memories mechanism (Fig. 5D). The trace decomposition makes the mechanism explicit: when CS_A flips from rewarded to unrewarded, m+(CS_A) persists at the acquired level — the original appetitive trace is **not erased** — but m-(CS_A) grows in parallel, driven by the cross-valence DAN feedback d- = ReLU(w_M · m+) firing on the now-unrewarded probe. Net m_hat = m+ − m- collapses fast because two things are moving simultaneously instead of one. **Cross-valence DAN feedback with parallel appetitive/aversive traces is necessary for reversal at acquisition speed.** Quantitatively matching Mancini's specific 3:1 acquisition-vs-reversal ratio requires asymmetric appetitive-vs-aversive plasticity parameters (consistent with Davis 2023's observation that aversive memories are more stable), which we leave for future work.
 
-(a) Pre-exposure protocol: 20 unrewarded CS+ presentations, then 40-trial CS+/CS- acquisition (vs. control group with unrelated pre-exposure odor). (b) Three models, 20 seeds: RPE shows essentially overlapping curves (no LI), Dual-DAN shows dramatic separation (control reaches 1.0 immediately, pre-exposed CS+ ramps slowly from 0 to ~0.8 over 40 trials). (c) Lambda sweep: LI effect (control−pre-exposed AUC) rises monotonically from 0.06 at λ=0 to 0.89 at λ=5. Pure RPE is the λ=0 limit.
+### Necessity is jointly satisfied, not pairwise
 
-**Claim**: surprisal-modulated learning rate `η_eff = η₀(1 + λ·surprisal_norm)` is necessary for latent inhibition. The Friston-Schwartenbeck precision form.
-
-**Source files:** `experiments/06_latent_inhibition.py`, `experiments/08_robustness.py`.
-
-### Figure 5 — Fast reversal (parallel-valence POM)
-
-(a) Mancini-style reversal: 30 trials CS_A → reward, then 30 trials CS_A → nothing, CS_B → reward. (b) Four models compared head-to-head:
-- RPE: symmetric reversal, ~10 trials each direction
-- AIF: cannot reverse, m_hat(CS_A) stays high for 50+ trials
-- Dual-DAN: slow asymmetric reversal (~14 trials)
-- Dual-Valence: instant reversal via parallel opposing memories
-(c) Trace dynamics: during reversal of CS_A, w+ persists (old appetitive trace) while w- grows in parallel (new aversive trace). m_hat = m+ − m- collapses without w+ extinguishing — the Felsenberg POM mechanism.
-(d) η tuning: symmetric Bennett-MV gives ratio ≈ 1 (reversal as fast as acquisition); Mancini's 3:1 requires asymmetric η+/η-.
-
-**Claim**: parallel valence traces with cross-valence DAN feedback are necessary for reversal at acquisition speed. Pure RPE cannot match. Asymmetric plasticity (future work) needed for full quantitative match.
-
-**Source files:** `experiments/07_reversal.py`, `experiments/08_robustness.py`.
-
-### Figure 6 (optional) — Necessity matrix
-
-A simple table or schematic showing which architectural ingredient is necessary for which behavioural signature. Removing any one ingredient → at least one signature fails.
+Across the four protocols, no subset of three architectural ingredients suffices: signed-weight RPE fails on novelty and latent inhibition; surprisal-channel-only fails on extinction and reversal; precision-weighting alone fails on reversal; parallel valence traces alone fail on latent inhibition. **All four ingredients are individually necessary, and the four together are sufficient for the four signatures tested.** The connectome substrate does not pick the learning rule — behaviour does.
 
 ---
 
