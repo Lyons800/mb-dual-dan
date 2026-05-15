@@ -22,7 +22,8 @@ Four architectural ingredients — signed-weight RPE, a Bayesian surprisal chann
 ```sh
 # Requires Python 3.12 and Homebrew (for swig, needed by box2d-py if you want larvaworld embodiment).
 brew install swig
-git clone <this-repo> brain
+git clone https://github.com/Lyons800/brain.git
+cd brain
 cd brain
 uv sync
 ```

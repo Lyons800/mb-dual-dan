@@ -123,7 +123,7 @@ All protocols are run for 20 random seeds for variance bands.
 
 ### Software and code availability
 
-All analyses were implemented in Python 3.12 using NumPy 2.4, SciPy 1.17, NetworkX 3.6, Brian2 2.10, JAX 0.4 (CPU), and matplotlib 3.9. The complete codebase, including reproducible experiment scripts and regression tests (37 tests, all passing), is released at `github.com/<TODO>` under MIT license. The Winding 2023 connectome data is reused under the original Zenodo deposit terms.
+All analyses were implemented in Python 3.12 using NumPy 2.4, SciPy 1.17, NetworkX 3.6, Brian2 2.10, JAX 0.4 (CPU), and matplotlib 3.9. The complete codebase, including reproducible experiment scripts and regression tests (37 tests, all passing), is released at `github.com/Lyons800/brain` under MIT license. The Winding 2023 connectome data is reused under the original Zenodo deposit terms.
 
 ### AI-assistance disclosure
 

@@ -10,7 +10,7 @@ authors:
   - given-names: Oisin
     family-names: Lyons
     email: oisinlyons13@gmail.com
-repository-code: 'https://github.com/oisinlyons/brain'
+repository-code: 'https://github.com/Lyons800/brain'
 abstract: >-
   Connectome-grounded computational model showing that four
   architectural ingredients (signed-weight RPE, Bayesian surprisal
