@@ -1,0 +1,31 @@
+{
+  "title": "brain: a dual-pathway dopaminergic code for reward prediction and epistemic surprise in the larval Drosophila mushroom body",
+  "description": "Connectome-grounded computational model showing that four architectural ingredients (signed-weight RPE, Bayesian surprisal channel, precision-weighted learning rate, parallel valence traces) are each individually necessary for four canonical behavioural signatures of the larval Drosophila mushroom body. Companion to bioRxiv preprint.",
+  "creators": [
+    {
+      "name": "Lyons, Oisin",
+      "affiliation": "Independent researcher"
+    }
+  ],
+  "access_right": "open",
+  "license": "MIT",
+  "keywords": [
+    "computational neuroscience",
+    "Drosophila",
+    "mushroom body",
+    "reinforcement learning",
+    "active inference",
+    "dopamine",
+    "connectome",
+    "Winding 2023"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "10.1126/science.add9330",
+      "relation": "isDerivedFrom",
+      "resource_type": "publication-article",
+      "scheme": "doi"
+    }
+  ],
+  "upload_type": "software"
+}

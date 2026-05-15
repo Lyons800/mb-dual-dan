@@ -1,0 +1,38 @@
+cff-version: 1.2.0
+title: >-
+  A dual-pathway dopaminergic code for reward prediction and
+  epistemic surprise in the larval Drosophila mushroom body
+message: >-
+  If you use this software or build on this work, please cite both
+  the preprint and the code release.
+type: software
+authors:
+  - given-names: Oisin
+    family-names: Lyons
+    email: oisinlyons13@gmail.com
+repository-code: 'https://github.com/oisinlyons/brain'
+abstract: >-
+  Connectome-grounded computational model showing that four
+  architectural ingredients (signed-weight RPE, Bayesian surprisal
+  channel, precision-weighted learning rate, parallel valence
+  traces) are each individually necessary for four canonical
+  behavioural signatures of the larval Drosophila mushroom body.
+keywords:
+  - computational neuroscience
+  - mushroom body
+  - Drosophila
+  - reinforcement learning
+  - active inference
+  - dopamine
+  - connectome
+license: MIT
+preferred-citation:
+  type: article
+  authors:
+    - given-names: Oisin
+      family-names: Lyons
+  title: >-
+    A dual-pathway dopaminergic code for reward prediction and
+    epistemic surprise in the larval Drosophila mushroom body
+  year: 2026
+  journal: bioRxiv
