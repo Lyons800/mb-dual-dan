@@ -7,8 +7,8 @@ Validates:
 - MB subgraph extraction produces sane numbers (KCs ~242, MBONs ~24, MBIN ~14).
 """
 
-from brain.connectome.loader import load_winding, summary
-from brain.connectome.mb_extract import extract_mb, mb_summary
+from mb_dual_dan.connectome.loader import load_winding, summary
+from mb_dual_dan.connectome.mb_extract import extract_mb, mb_summary
 
 
 def main():

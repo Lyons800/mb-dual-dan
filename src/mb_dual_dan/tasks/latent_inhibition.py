@@ -25,8 +25,8 @@ from dataclasses import dataclass
 
 import numpy as np
 
-from brain.models.shared import sample_odor_pattern
-from brain.tasks.conditioning import CSPair
+from mb_dual_dan.models.shared import sample_odor_pattern
+from mb_dual_dan.tasks.conditioning import CSPair
 
 
 @dataclass

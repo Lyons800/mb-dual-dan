@@ -23,8 +23,8 @@ from dataclasses import dataclass
 import numpy as np
 import scipy.sparse as sp
 
-from brain.connectome.mb_extract import MBSubgraph
-from brain.models.shared import KCSparseCoder
+from mb_dual_dan.connectome.mb_extract import MBSubgraph
+from mb_dual_dan.models.shared import KCSparseCoder
 
 
 @dataclass

@@ -20,8 +20,8 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import numpy as np
 
-from brain.connectome import extract_mb, load_winding
-from brain.connectome.compartments import discover_bipartite
+from mb_dual_dan.connectome import extract_mb, load_winding
+from mb_dual_dan.connectome.compartments import discover_bipartite
 
 RESULTS_DIR = Path(__file__).resolve().parents[1] / "results"
 RESULTS_DIR.mkdir(exist_ok=True)

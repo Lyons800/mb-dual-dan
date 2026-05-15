@@ -2,9 +2,9 @@
 
 import numpy as np
 
-from brain.connectome import extract_mb, load_winding
-from brain.models.aif_agent import AIFAgent
-from brain.tasks.conditioning import conditioning_trials, make_cs_pair
+from mb_dual_dan.connectome import extract_mb, load_winding
+from mb_dual_dan.models.aif_agent import AIFAgent
+from mb_dual_dan.tasks.conditioning import conditioning_trials, make_cs_pair
 
 
 def _train(n_trials: int = 60, seed: int = 0):

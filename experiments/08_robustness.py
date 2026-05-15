@@ -15,13 +15,13 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import numpy as np
 
-from brain.connectome import extract_mb, load_winding
-from brain.models.dual_dan import DualDANAgent
-from brain.models.dual_valence import DualValenceMB
-from brain.models.rpe_baseline import BennettRPE
-from brain.robustness import run_seeds, sweep_param
-from brain.tasks.conditioning import conditioning_trials, make_cs_pair, reversal_trials
-from brain.tasks.latent_inhibition import make_li_schedule
+from mb_dual_dan.connectome import extract_mb, load_winding
+from mb_dual_dan.models.dual_dan import DualDANAgent
+from mb_dual_dan.models.dual_valence import DualValenceMB
+from mb_dual_dan.models.rpe_baseline import BennettRPE
+from mb_dual_dan.robustness import run_seeds, sweep_param
+from mb_dual_dan.tasks.conditioning import conditioning_trials, make_cs_pair, reversal_trials
+from mb_dual_dan.tasks.latent_inhibition import make_li_schedule
 
 RESULTS_DIR = Path(__file__).resolve().parents[1] / "results"
 RESULTS_DIR.mkdir(exist_ok=True)

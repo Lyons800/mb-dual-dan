@@ -11,7 +11,7 @@ from dataclasses import dataclass
 import numpy as np
 import scipy.sparse as sp
 
-from brain.connectome.loader import Connectome
+from mb_dual_dan.connectome.loader import Connectome
 
 
 @dataclass

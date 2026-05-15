@@ -30,7 +30,7 @@ WITHOUT requiring the old w+ to extinguish first. Net m_hat = m+ - m-
 collapses to ~0 quickly even though w+ hasn't decayed.
 
 Compartment grouping uses the DAN/MBON valence tables in
-brain.connectome.valence. Appetitive compartments contribute to m+ output;
+mb_dual_dan.connectome.valence. Appetitive compartments contribute to m+ output;
 aversive compartments to m-. Plasticity is applied per compartment but
 read out as a pooled m+ / m- valence.
 """
@@ -41,9 +41,9 @@ from dataclasses import dataclass
 
 import numpy as np
 
-from brain.connectome.mb_extract import MBSubgraph
-from brain.connectome.valence import dan_valence, mbon_compartment_letter
-from brain.models.shared import KCSparseCoder
+from mb_dual_dan.connectome.mb_extract import MBSubgraph
+from mb_dual_dan.connectome.valence import dan_valence, mbon_compartment_letter
+from mb_dual_dan.models.shared import KCSparseCoder
 
 
 @dataclass

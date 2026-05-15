@@ -58,8 +58,8 @@ from dataclasses import dataclass, field
 
 import numpy as np
 
-from brain.connectome.mb_extract import MBSubgraph
-from brain.models.shared import KCSparseCoder
+from mb_dual_dan.connectome.mb_extract import MBSubgraph
+from mb_dual_dan.models.shared import KCSparseCoder
 
 
 @dataclass

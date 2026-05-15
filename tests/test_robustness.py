@@ -2,7 +2,7 @@
 
 import numpy as np
 
-from brain.robustness import run_seeds, sweep_param
+from mb_dual_dan.robustness import run_seeds, sweep_param
 
 
 def test_run_seeds_returns_means_and_bands():

@@ -12,9 +12,9 @@ extinguished — the asymmetry Mancini 2019 measured.
 
 import numpy as np
 
-from brain.connectome import extract_mb, load_winding
-from brain.models.dual_valence import DualValenceMB
-from brain.tasks.conditioning import conditioning_trials, make_cs_pair, reversal_trials
+from mb_dual_dan.connectome import extract_mb, load_winding
+from mb_dual_dan.models.dual_valence import DualValenceMB
+from mb_dual_dan.tasks.conditioning import conditioning_trials, make_cs_pair, reversal_trials
 
 
 def _setup(seed: int = 0):
@@ -72,7 +72,7 @@ def test_dual_valence_reverses_via_parallel_aversive_trace():
 def test_dual_valence_reverses_faster_than_pure_rpe():
     """The discriminating prediction from Bennett-MV / Felsenberg-POM:
     dual-valence reversal completes in fewer trials than pure RPE."""
-    from brain.models.rpe_baseline import BennettRPE
+    from mb_dual_dan.models.rpe_baseline import BennettRPE
 
     c = load_winding()
     mb = extract_mb(c, include_pns=True)

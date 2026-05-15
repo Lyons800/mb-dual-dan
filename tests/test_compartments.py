@@ -7,8 +7,8 @@ have promiscuous KC contacts and contaminate compartment recovery.
 
 import numpy as np
 
-from brain.connectome import extract_mb, load_winding
-from brain.connectome.compartments import compartment_groups, discover_bipartite
+from mb_dual_dan.connectome import extract_mb, load_winding
+from mb_dual_dan.connectome.compartments import compartment_groups, discover_bipartite
 
 
 def test_dan_jaccard_matrix_shape():

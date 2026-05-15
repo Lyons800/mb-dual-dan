@@ -5,9 +5,9 @@ Pin down the acquisition behaviour so any future refactor surfaces a regression.
 
 import numpy as np
 
-from brain.connectome import extract_mb, load_winding
-from brain.models.rpe_baseline import BennettRPE
-from brain.tasks.conditioning import conditioning_trials, make_cs_pair
+from mb_dual_dan.connectome import extract_mb, load_winding
+from mb_dual_dan.models.rpe_baseline import BennettRPE
+from mb_dual_dan.tasks.conditioning import conditioning_trials, make_cs_pair
 
 
 def _train(n_trials=60, seed=0):

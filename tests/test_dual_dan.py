@@ -8,12 +8,12 @@ These tests pin down the headline behaviour:
 
 import numpy as np
 
-from brain.connectome import extract_mb, load_winding
-from brain.models.aif_agent import AIFAgent
-from brain.models.dual_dan import DualDANAgent
-from brain.models.rpe_baseline import BennettRPE
-from brain.tasks.conditioning import make_cs_pair
-from brain.tasks.latent_inhibition import make_li_schedule
+from mb_dual_dan.connectome import extract_mb, load_winding
+from mb_dual_dan.models.aif_agent import AIFAgent
+from mb_dual_dan.models.dual_dan import DualDANAgent
+from mb_dual_dan.models.rpe_baseline import BennettRPE
+from mb_dual_dan.tasks.conditioning import make_cs_pair
+from mb_dual_dan.tasks.latent_inhibition import make_li_schedule
 
 
 def _setup(seed: int = 0):

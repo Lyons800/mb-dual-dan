@@ -19,7 +19,7 @@ from dataclasses import dataclass
 
 import numpy as np
 
-from brain.models.shared import sample_odor_pattern
+from mb_dual_dan.models.shared import sample_odor_pattern
 
 
 @dataclass

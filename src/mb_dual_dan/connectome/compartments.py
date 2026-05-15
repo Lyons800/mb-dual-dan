@@ -28,7 +28,7 @@ import numpy as np
 from scipy.cluster.hierarchy import fcluster, linkage
 from scipy.spatial.distance import pdist, squareform
 
-from brain.connectome.mb_extract import MBSubgraph
+from mb_dual_dan.connectome.mb_extract import MBSubgraph
 
 
 @dataclass

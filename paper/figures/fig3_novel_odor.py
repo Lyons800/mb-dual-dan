@@ -17,11 +17,11 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 
-from brain.connectome import extract_mb, load_winding
-from brain.models.aif_agent import AIFAgent
-from brain.models.rpe_baseline import BennettRPE
-from brain.tasks.conditioning import conditioning_trials, make_cs_pair
-from brain.tasks.novel_odor import make_probes
+from mb_dual_dan.connectome import extract_mb, load_winding
+from mb_dual_dan.models.aif_agent import AIFAgent
+from mb_dual_dan.models.rpe_baseline import BennettRPE
+from mb_dual_dan.tasks.conditioning import conditioning_trials, make_cs_pair
+from mb_dual_dan.tasks.novel_odor import make_probes
 
 OUT = Path(__file__).parent / "fig3_novel_odor.png"
 

@@ -55,9 +55,9 @@ from dataclasses import dataclass
 
 import numpy as np
 
-from brain.connectome.mb_extract import MBSubgraph
-from brain.models.aif_agent import AIFAgent
-from brain.models.rpe_baseline import BennettRPE
+from mb_dual_dan.connectome.mb_extract import MBSubgraph
+from mb_dual_dan.models.aif_agent import AIFAgent
+from mb_dual_dan.models.rpe_baseline import BennettRPE
 
 
 @dataclass

@@ -9,11 +9,11 @@ in Phase 3i.
 
 import numpy as np
 
-from brain.connectome import extract_mb, load_winding
-from brain.models.aif_agent import AIFAgent
-from brain.models.dual_dan import DualDANAgent
-from brain.models.rpe_baseline import BennettRPE
-from brain.tasks.conditioning import conditioning_trials, make_cs_pair, reversal_trials
+from mb_dual_dan.connectome import extract_mb, load_winding
+from mb_dual_dan.models.aif_agent import AIFAgent
+from mb_dual_dan.models.dual_dan import DualDANAgent
+from mb_dual_dan.models.rpe_baseline import BennettRPE
+from mb_dual_dan.tasks.conditioning import conditioning_trials, make_cs_pair, reversal_trials
 
 
 def _run(agent_fn, n_acq=30, n_rev=30, seed=0):

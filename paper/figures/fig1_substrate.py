@@ -18,8 +18,8 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 
-from brain.connectome import extract_mb, load_winding
-from brain.connectome.compartments import discover_bipartite
+from mb_dual_dan.connectome import extract_mb, load_winding
+from mb_dual_dan.connectome.compartments import discover_bipartite
 
 OUT = Path(__file__).parent / "fig1_substrate.png"
 

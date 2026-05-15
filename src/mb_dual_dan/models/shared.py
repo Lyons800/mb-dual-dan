@@ -12,7 +12,7 @@ from dataclasses import dataclass, field
 import numpy as np
 import scipy.sparse as sp
 
-from brain.connectome.mb_extract import MBSubgraph
+from mb_dual_dan.connectome.mb_extract import MBSubgraph
 
 
 def _normalize_rows(W: sp.csr_matrix) -> sp.csr_matrix:

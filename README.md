@@ -1,4 +1,4 @@
-# brain
+# mb-dual-dan
 
 **A dual-pathway dopaminergic code for reward prediction and epistemic surprise in the larval *Drosophila* mushroom body.**
 

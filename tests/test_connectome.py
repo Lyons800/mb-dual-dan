@@ -6,8 +6,8 @@ these tests pin down what we're working against.
 
 import numpy as np
 
-from brain.connectome import load_winding, extract_mb
-from brain.connectome.nt_signs import neuron_signs, signed_W
+from mb_dual_dan.connectome import load_winding, extract_mb
+from mb_dual_dan.connectome.nt_signs import neuron_signs, signed_W
 
 
 def test_winding_loads():

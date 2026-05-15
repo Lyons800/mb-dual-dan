@@ -7,11 +7,11 @@ tests pin down that signature on the real larval connectome.
 
 import numpy as np
 
-from brain.connectome import extract_mb, load_winding
-from brain.models.aif_agent import AIFAgent
-from brain.models.rpe_baseline import BennettRPE
-from brain.tasks.conditioning import conditioning_trials, make_cs_pair
-from brain.tasks.novel_odor import make_probes
+from mb_dual_dan.connectome import extract_mb, load_winding
+from mb_dual_dan.models.aif_agent import AIFAgent
+from mb_dual_dan.models.rpe_baseline import BennettRPE
+from mb_dual_dan.tasks.conditioning import conditioning_trials, make_cs_pair
+from mb_dual_dan.tasks.novel_odor import make_probes
 
 
 def _trained(seed: int = 0, n_train: int = 60):

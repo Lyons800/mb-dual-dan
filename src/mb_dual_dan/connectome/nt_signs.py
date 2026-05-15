@@ -20,7 +20,7 @@ from __future__ import annotations
 import numpy as np
 import scipy.sparse as sp
 
-from brain.connectome.loader import Connectome
+from mb_dual_dan.connectome.loader import Connectome
 
 INHIBITORY_CELLTYPES = {"LN", "APL"}
 MODULATORY_CELLTYPES = {"MBIN"}  # treated as +1 here; real DAN logic is in the agents

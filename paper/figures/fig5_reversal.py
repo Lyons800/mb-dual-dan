@@ -17,11 +17,11 @@ import matplotlib.pyplot as plt
 import matplotlib as mpl
 import numpy as np
 
-from brain.connectome import extract_mb, load_winding
-from brain.models.aif_agent import AIFAgent
-from brain.models.dual_valence import DualValenceMB
-from brain.models.rpe_baseline import BennettRPE
-from brain.tasks.conditioning import conditioning_trials, make_cs_pair, reversal_trials
+from mb_dual_dan.connectome import extract_mb, load_winding
+from mb_dual_dan.models.aif_agent import AIFAgent
+from mb_dual_dan.models.dual_valence import DualValenceMB
+from mb_dual_dan.models.rpe_baseline import BennettRPE
+from mb_dual_dan.tasks.conditioning import conditioning_trials, make_cs_pair, reversal_trials
 
 OUT = Path(__file__).parent / "fig5_reversal.png"
 
