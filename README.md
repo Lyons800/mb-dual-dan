@@ -12,7 +12,7 @@ Four architectural ingredients — signed-weight RPE, a Bayesian surprisal chann
 |---|---|---|
 | Acquisition + extinction | Signed-weight RPE | Bennett 2021; Felsenberg 2018 |
 | Novel-odor DAN firing + habituation | Bayesian surprisal channel | Hattori 2017 |
-| Latent inhibition | Precision-weighted η_eff = η_0(1 + λ·σ) | Jacob & Waddell 2022 |
+| Latent inhibition | Precision-weighted η_eff = η_0(1 + λ·σ) | Jacob et al. 2021 |
 | Fast reversal | Parallel appetitive/aversive traces (Bennett-MV / Felsenberg-POM) | Mancini 2019 |
 
 **Falsifiable prediction**: DAN-c1 (the larval analogue of adult PPL1-α'3) should habituate to novel odors before reinforcement, testable by calcium imaging.
