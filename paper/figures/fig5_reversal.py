@@ -19,6 +19,7 @@ import numpy as np
 
 from mb_dual_dan.connectome import extract_mb, load_winding
 from mb_dual_dan.models.aif_agent import AIFAgent
+from mb_dual_dan.models.dual_dan import DualDANAgent
 from mb_dual_dan.models.dual_valence import DualValenceMB
 from mb_dual_dan.models.rpe_baseline import BennettRPE
 from mb_dual_dan.tasks.conditioning import conditioning_trials, make_cs_pair, reversal_trials
@@ -77,45 +78,54 @@ def main():
     mb = extract_mb(c, include_pns=True)
     cs = make_cs_pair(BennettRPE.from_mb(mb, seed=0).coder.n_pn, active_frac=0.1, seed=1)
 
-    rpe_log = run_one_model(BennettRPE.from_mb(mb, eta=0.025, w_init=0.05, sparsity=0.05, seed=0), mb, cs)
-    aif_log = run_one_model(AIFAgent.from_mb(mb, sparsity=0.05, seed=0), mb, cs)
-    dv_log = run_one_model(DualValenceMB.from_mb(mb, eta=0.005, lambda_baseline=1.0, w_M=1.0,
-                                                  w_init=0.05, sparsity=0.05, seed=0), mb, cs)
+    # All four agents instantiated at matched eta=0.005 so the comparison
+    # is in the same dynamical regime (qualitative result robust across
+    # eta in [0.001, 0.025]; see Fig. 8 robustness sweep).
+    ETA = 0.005
+    rpe_log = run_one_model(
+        BennettRPE.from_mb(mb, eta=ETA, w_init=0.05, sparsity=0.05, seed=0), mb, cs)
+    aif_log = run_one_model(
+        AIFAgent.from_mb(mb, sparsity=0.05, seed=0), mb, cs)
+    dd_log = run_one_model(
+        DualDANAgent.from_mb(mb, eta0=ETA, lambda_precision=1.5,
+                             w_init=0.05, sparsity=0.05, seed=0), mb, cs)
+    dv_log = run_one_model(
+        DualValenceMB.from_mb(mb, eta=ETA, lambda_baseline=1.0, w_M=1.0,
+                              w_init=0.05, sparsity=0.05, seed=0), mb, cs)
 
-    fig, axes = plt.subplots(2, 2, figsize=(7.5, 5.5))
+    fig, axes = plt.subplots(2, 2, figsize=(8, 5.7))
 
-    def panel(ax, log, title):
+    def panel(ax, log, title, ylim=(-0.3, 1.4)):
         t = np.arange(len(log["m_a"]))
         rev_start = int(np.argmax(log["phase"] == "rev"))
         ax.plot(t, log["m_a"], "-", color=PAL["CS_A"], lw=1.5, label=r"$\hat{m}$(CS$_A$)")
         ax.plot(t, log["m_b"], "-", color=PAL["CS_B"], lw=1.5, label=r"$\hat{m}$(CS$_B$)")
         ax.axvspan(rev_start - 0.5, len(t) - 0.5, color="#f4f4f4", zorder=-1)
-        ax.text(rev_start + 0.5, ax.get_ylim()[1] * 0.95 if ax.get_ylim()[1] > 0 else 1.0,
-                "reversal", fontsize=7, style="italic", color="#666")
+        ax.text(rev_start + 0.5, ylim[1] * 0.92, "reversal", fontsize=7, style="italic", color="#666")
         ax.set_title(title, loc="left", fontweight="bold")
         ax.set_xlabel("trial")
         ax.set_ylabel(r"$\hat{m}$")
-        ax.legend(loc="lower right")
-        ax.set_ylim(-0.3, 1.4)
+        ax.legend(loc="lower right", fontsize=7)
+        ax.set_ylim(*ylim)
         ax.axhline(0, color="k", lw=0.4, ls=":")
 
     panel(axes[0, 0], rpe_log, "A   RPE — slow symmetric reversal")
     panel(axes[0, 1], aif_log, "B   AIF — cannot reverse")
-    panel(axes[1, 0], dv_log,  "C   Dual-Valence — fast reversal via POM")
+    panel(axes[1, 0], dd_log,  "C   Dual-DAN — reverses, but no parallel trace")
 
-    # Panel D: trace dynamics for Dual-Valence
+    # Panel D: Dual-Valence with POM mechanism inset
     ax = axes[1, 1]
     t = np.arange(len(dv_log["m_a"]))
     rev_start = int(np.argmax(dv_log["phase"] == "rev"))
-    ax.plot(t, dv_log["m_plus_a"], "-", color=PAL["w+"], lw=1.5, label=r"$m^+$ (appetitive)")
-    ax.plot(t, dv_log["m_minus_a"], "-", color=PAL["w-"], lw=1.5, label=r"$m^-$ (aversive)")
-    ax.plot(t, dv_log["m_a"], "--", color=PAL["m_hat"], lw=1.2, label=r"$\hat{m} = m^+ - m^-$")
+    ax.plot(t, dv_log["m_plus_a"], "-", color=PAL["w+"], lw=1.4, label=r"$m^+$ (appetitive)")
+    ax.plot(t, dv_log["m_minus_a"], "-", color=PAL["w-"], lw=1.4, label=r"$m^-$ (aversive)")
+    ax.plot(t, dv_log["m_a"], "--", color=PAL["m_hat"], lw=1.2, label=r"$\hat{m}=m^+-m^-$")
     ax.axvspan(rev_start - 0.5, len(t) - 0.5, color="#f4f4f4", zorder=-1)
-    ax.text(rev_start + 0.5, ax.get_ylim()[1] * 0.95, "reversal", fontsize=7, style="italic", color="#666")
-    ax.set_title("D   POM mechanism — parallel traces on CS$_A$", loc="left", fontweight="bold")
+    ax.text(rev_start + 0.5, 1.7, "reversal", fontsize=7, style="italic", color="#666")
+    ax.set_title("D   Dual-Valence — POM, parallel traces on CS$_A$", loc="left", fontweight="bold")
     ax.set_xlabel("trial")
     ax.set_ylabel("MBON pool output")
-    ax.legend(loc="upper right")
+    ax.legend(loc="upper right", fontsize=7)
     ax.axhline(0, color="k", lw=0.4, ls=":")
 
     fig.tight_layout()

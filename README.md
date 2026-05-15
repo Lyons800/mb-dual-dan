@@ -24,7 +24,6 @@ Four architectural ingredients — signed-weight RPE, a Bayesian surprisal chann
 brew install swig
 git clone https://github.com/Lyons800/mb-dual-dan.git
 cd mb-dual-dan
-cd brain
 uv sync
 ```
 
