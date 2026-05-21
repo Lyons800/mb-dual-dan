@@ -11,6 +11,9 @@ authors:
     family-names: Lyons
     email: oisinlyons13@gmail.com
 repository-code: 'https://github.com/Lyons800/mb-dual-dan'
+doi: 10.5281/zenodo.20326853
+version: 0.1.1
+date-released: '2026-05-21'
 abstract: >-
   Connectome-grounded computational model showing that four
   architectural ingredients (signed-weight RPE, Bayesian surprisal

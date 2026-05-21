@@ -1,5 +1,7 @@
 # mb-dual-dan
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20326853.svg)](https://doi.org/10.5281/zenodo.20326853)
+
 **A dual-pathway dopaminergic code for reward prediction and epistemic surprise in the larval *Drosophila* mushroom body.**
 
 Companion code repository for the paper of the same name (manuscript in `paper/manuscript.md`).
