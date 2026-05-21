@@ -1,5 +1,5 @@
 {
-  "title": "brain: a dual-pathway dopaminergic code for reward prediction and epistemic surprise in the larval Drosophila mushroom body",
+  "title": "mb-dual-dan: A dual-pathway dopaminergic code for reward prediction and epistemic surprise in the larval Drosophila mushroom body",
   "description": "Connectome-grounded computational model showing that four architectural ingredients (signed-weight RPE, Bayesian surprisal channel, precision-weighted learning rate, parallel valence traces) are each individually necessary for four canonical behavioural signatures of the larval Drosophila mushroom body. Companion to bioRxiv preprint.",
   "creators": [
     {
