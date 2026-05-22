@@ -1,6 +1,5 @@
 # A dual-pathway dopaminergic code for reward prediction and epistemic surprise in the larval *Drosophila* mushroom body
 
-**Target venue:** *eLife* via *bioRxiv*. Target submission: 2026-08.
 **Author:** Oisin Lyons. **AI-assistance disclosure:** see Methods.
 
 ---
